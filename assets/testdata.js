@@ -8,4 +8,5 @@ module.exports = [
   'testi',
   'kieli',
   'vaara',
+  'viiva',
 ];

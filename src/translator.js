@@ -14,6 +14,8 @@ function Translator(originalWord) {
       return this.mutateWithLongVowel();
     } else if (this.beginsWithDoubleVowel()) {
       return this.mutateWithDoubleVowel();
+    } else if (this.beginsWithConsonantWithLongVowel()) {
+      return this.mutateConsonantWithLongVowel();
     } else {
       return this.mutateNormal();
     }
@@ -47,6 +49,21 @@ function Translator(originalWord) {
     if (
       this.isVowel(this.charsFromOriginalWord[0]) &&
       this.isVowel(this.charsFromOriginalWord[1])
+    ) {
+      return true;
+    }
+    return false;
+  };
+  /**
+   * Does the original word begin with a consonant followed with double vowel like 'aa', 'ii' etc.
+   * @returns {boolean}
+   */
+  Translator.prototype.beginsWithConsonantWithLongVowel = function () {
+    if (
+      this.isVowel(this.charsFromOriginalWord[0]) == false &&
+      this.isVowel(this.charsFromOriginalWord[1]) &&
+      this.isVowel(this.originalWord[2]) &&
+      this.charsFromOriginalWord[1] == this.originalWord[2]
     ) {
       return true;
     }
@@ -99,7 +116,7 @@ function Translator(originalWord) {
           (this.originalWord.length - this.charsFromOriginalWord.length)
       );
 
-    // kontti -> antti (with example originalWord 'aatto')
+    // kontti -> antti
     const mutatedKontti =
       this.charsFromOriginalWord[0] +
       this.kontti.substr(
@@ -114,6 +131,7 @@ function Translator(originalWord) {
    * @returns {string} mutated string
    */
   Translator.prototype.mutateWithDoubleVowel = function () {
+    // auto -> kouto
     const mutatedOriginalWord =
       this.charsFromKontti +
       this.charsFromOriginalWord[1] +
@@ -122,8 +140,33 @@ function Translator(originalWord) {
           (this.originalWord.length - this.charsFromOriginalWord.length)
       );
 
+    // kontti -> antti
     const mutatedKontti =
       this.charsFromOriginalWord[0] +
+      this.kontti.substr(
+        this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
+      );
+
+    return mutatedOriginalWord + mutatedKontti;
+  };
+  /**
+   * The original word begins with a consonant following long vowel like aa, ii, etc.
+   * Example: vaara kontti -> koora vantti.
+   * @returns {string} mutated string
+   */
+  Translator.prototype.mutateConsonantWithLongVowel = function () {
+    // vaara -> koova
+    const mutatedOriginalWord =
+      'koo' +
+      this.originalWord.substr(
+        this.originalWord.length -
+          (this.originalWord.length - this.charsFromOriginalWord.length - 1)
+      );
+
+    // kontti -> antti
+    const mutatedKontti =
+      this.charsFromOriginalWord[0] +
+      this.charsFromOriginalWord[1] +
       this.kontti.substr(
         this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
       );
