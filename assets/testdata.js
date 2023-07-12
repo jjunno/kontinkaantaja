@@ -1,1 +1,1 @@
-module.exports = ['sana', 'aatto', 'testi'];
+module.exports = ['sana', 'auto', 'iiro', 'aava', 'aatto', 'testi'];
