@@ -16,4 +16,5 @@ module.exports = [
   'approksimaatio',
   'vektori',
   'integraatio',
+  'kontinkääntäjä',
 ];
