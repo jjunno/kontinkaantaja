@@ -6,19 +6,24 @@ function Translator(originalWord) {
 
   this.charsFromKontti = this.kontti.slice(0, 2); // kontti -> ko
   this.charsFromOriginalWord = this.originalWord.slice(0, 2); // sana -> sa
+  this.mutatedOriginalWord = null;
+  this.mutatedKontti = null;
 
   this.vowels = ['a', 'e', 'i', 'o', 'u', 'y', 'ä', 'ö', 'å'];
 
   Translator.prototype.translate = function () {
     if (this.beginsWithLongVowel()) {
-      return this.mutateWithLongVowel();
+      this.mutateWithLongVowel();
     } else if (this.beginsWithDoubleVowel()) {
-      return this.mutateWithDoubleVowel();
+      this.mutateWithDoubleVowel();
     } else if (this.beginsWithConsonantWithLongVowel()) {
-      return this.mutateConsonantWithLongVowel();
+      this.mutateConsonantWithLongVowel();
     } else {
-      return this.mutateNormal();
+      this.mutateNormal();
     }
+
+    this.generalAdjustments();
+    return this.mutatedOriginalWord + this.mutatedKontti;
   };
   /**
    * @param {string} character
@@ -86,7 +91,7 @@ function Translator(originalWord) {
      * Example: sana
      */
     // sana -> kona
-    const mutatedOriginalWord =
+    this.mutatedOriginalWord =
       this.charsFromKontti +
       this.originalWord.substr(
         this.originalWord.length -
@@ -94,13 +99,11 @@ function Translator(originalWord) {
       );
 
     // kontti -> santti (with example originalWord 'sana')
-    const mutatedKontti =
+    this.mutatedKontti =
       this.charsFromOriginalWord +
       this.kontti.substr(
         this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
       );
-
-    return mutatedOriginalWord + mutatedKontti;
   };
   /**
    * The original word begins with long vowel like aa, ii, etc.
@@ -109,7 +112,7 @@ function Translator(originalWord) {
    */
   Translator.prototype.mutateWithLongVowel = function () {
     // aatto -> kootto
-    const mutatedOriginalWord =
+    this.mutatedOriginalWord =
       'koo' +
       this.originalWord.substr(
         this.originalWord.length -
@@ -117,13 +120,11 @@ function Translator(originalWord) {
       );
 
     // kontti -> antti
-    const mutatedKontti =
+    this.mutatedKontti =
       this.charsFromOriginalWord[0] +
       this.kontti.substr(
         this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
       );
-
-    return mutatedOriginalWord + mutatedKontti;
   };
   /**
    * The original word begins with double vowel like au, ai, etc.
@@ -132,7 +133,7 @@ function Translator(originalWord) {
    */
   Translator.prototype.mutateWithDoubleVowel = function () {
     // auto -> kouto
-    const mutatedOriginalWord =
+    this.mutatedOriginalWord =
       this.charsFromKontti +
       this.charsFromOriginalWord[1] +
       this.originalWord.substr(
@@ -141,13 +142,11 @@ function Translator(originalWord) {
       );
 
     // kontti -> antti
-    const mutatedKontti =
+    this.mutatedKontti =
       this.charsFromOriginalWord[0] +
       this.kontti.substr(
         this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
       );
-
-    return mutatedOriginalWord + mutatedKontti;
   };
   /**
    * The original word begins with a consonant following long vowel like aa, ii, etc.
@@ -156,7 +155,7 @@ function Translator(originalWord) {
    */
   Translator.prototype.mutateConsonantWithLongVowel = function () {
     // vaara -> koova
-    const mutatedOriginalWord =
+    this.mutatedOriginalWord =
       'koo' +
       this.originalWord.substr(
         this.originalWord.length -
@@ -164,14 +163,28 @@ function Translator(originalWord) {
       );
 
     // kontti -> antti
-    const mutatedKontti =
+    this.mutatedKontti =
       this.charsFromOriginalWord[0] +
       this.charsFromOriginalWord[1] +
       this.kontti.substr(
         this.kontti.length - (this.kontti.length - this.charsFromKontti.length)
       );
-
-    return mutatedOriginalWord + mutatedKontti;
+  };
+  /**
+   * General adjustements for all mutated strings before returning.
+   * @return {string}
+   */
+  Translator.prototype.generalAdjustments = function () {
+    /**
+     * If the second character from original string is a consonant, it should be removed
+     * because for example approksimaatio would result koproksimaatioapntti, which is wrong.
+     *
+     * This block will result into approksimaatio -> koproksimaatioantti
+     */
+    if (this.isVowel(this.mutatedKontti[1]) == false) {
+      this.mutatedKontti =
+        this.mutatedKontti.slice(0, 1) + this.mutatedKontti.slice(2);
+    }
   };
 }
 

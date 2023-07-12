@@ -14,7 +14,7 @@ function test() {
     }
     const translator = new Translator(originalWord);
 
-    console.log(`${originalWord} kontti => ${translator.translate()}`);
+    console.log(`${originalWord} => ${translator.translate()}`);
   }
 }
 
