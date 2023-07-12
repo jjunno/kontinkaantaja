@@ -1,1 +1,11 @@
-module.exports = ['sana', 'auto', 'iiro', 'aava', 'aatto', 'testi'];
+module.exports = [
+  'jäätelÅ',
+  'sana',
+  'auto',
+  'iiro',
+  'aava',
+  'aatto',
+  'testi',
+  'kieli',
+  'vaara',
+];

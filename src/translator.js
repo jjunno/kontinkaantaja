@@ -1,4 +1,4 @@
-console.log('Translator.js');
+console.debug('Translator.js');
 
 function Translator(originalWord) {
   this.kontti = 'kontti';
