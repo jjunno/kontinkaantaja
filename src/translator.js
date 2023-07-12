@@ -179,11 +179,22 @@ function Translator(originalWord) {
      * If the second character from original string is a consonant, it should be removed
      * because for example approksimaatio would result koproksimaatioapntti, which is wrong.
      *
+     * The removed consonant will be moved to the mutated original word.
+     *
      * This block will result into approksimaatio -> koproksimaatioantti
      */
     if (this.isVowel(this.mutatedKontti[1]) == false) {
+      const consonant = this.mutatedKontti[1];
+
+      // Remove consonant
       this.mutatedKontti =
         this.mutatedKontti.slice(0, 1) + this.mutatedKontti.slice(2);
+
+      // Add it to the mutated original word
+      this.mutatedOriginalWord =
+        this.mutatedOriginalWord.slice(0, 2) +
+        consonant +
+        this.mutatedOriginalWord.slice(2);
     }
   };
 }
