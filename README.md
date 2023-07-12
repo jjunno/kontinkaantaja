@@ -19,3 +19,26 @@ Löytyy listasta assets/testdata.js.
 ```node
 node src/app.js
 ```
+
+## Esimerkit
+
+```
+sana => konasantti
+auto => konutoatti
+aava => konovaatti
+aatto => konottoatti
+testi => kostitentti
+kieli => koelikintti
+vaara => kooravantti
+viiva => koovavintti
+jäätelö => kootelöjäntti
+kakku => kokkukantti
+keijo => koijokentti
+kyllä => kolläkyntti
+kellä => kolläkentti
+ei => konietti
+approksimaatio => kopproksimaatioantti
+vektori => koktoriventti
+integraatio => kontegraatiointti
+kontinkääntäjä => kontinkääntäjäkontti
+```
